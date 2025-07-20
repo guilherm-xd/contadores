@@ -18,6 +18,12 @@ você pode escolher o nome do contador, a data, hora e a cor que o seu contador 
 
 baseado se a data que você escolheu já passou ou vai passar, o contador vai contar até a data ou desde a data.
 
+clique no contador pra mudar entre o modo de exibição de data simplificado ou o que mostra o total de dias
+
+<img width="1010" height="144" alt="image" src="https://github.com/user-attachments/assets/48241c20-796f-42a1-8666-3573beebd638" /> modo simplificado
+
+<img width="1010" height="144" alt="image" src="https://github.com/user-attachments/assets/0a408419-9507-40bf-b18d-b1d099d45c4f" /> modo que mostra o total de dias
+
 clique no botão ☀️ ou 🌙 para alternar entre modo claro e escuro
 
 <img width="56" height="49" alt="image" src="https://github.com/user-attachments/assets/3345ae57-cebb-40e5-ab87-8933a5b4e0ac" />
