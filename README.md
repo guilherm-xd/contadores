@@ -20,9 +20,9 @@ baseado se a data que você escolheu já passou ou vai passar, o contador vai co
 
 clique no botão ☀️ ou 🌙 para alternar entre modo claro e escuro
 
-<img width="54" height="53" alt="image" src="https://github.com/user-attachments/assets/baa81d49-0976-4b34-b449-4dfad771e174" />
-
 <img width="56" height="49" alt="image" src="https://github.com/user-attachments/assets/3345ae57-cebb-40e5-ab87-8933a5b4e0ac" />
+
+<img width="54" height="53" alt="image" src="https://github.com/user-attachments/assets/baa81d49-0976-4b34-b449-4dfad771e174" />
 
 clique em @guilhermxd pra exibir minhas redes sociais (mas só se você quiser 😁)
 
