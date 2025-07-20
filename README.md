@@ -20,9 +20,13 @@ baseado se a data que você escolheu já passou ou vai passar, o contador vai co
 
 clique no contador pra mudar entre o modo de exibição de data simplificado ou o que mostra o total de dias
 
-<img width="1010" height="144" alt="image" src="https://github.com/user-attachments/assets/48241c20-796f-42a1-8666-3573beebd638" /> modo simplificado
+modo simplificado
 
-<img width="1010" height="144" alt="image" src="https://github.com/user-attachments/assets/0a408419-9507-40bf-b18d-b1d099d45c4f" /> modo que mostra o total de dias
+<img width="1010" height="144" alt="image" src="https://github.com/user-attachments/assets/48241c20-796f-42a1-8666-3573beebd638" /> 
+
+modo que mostra o total de dias
+
+<img width="1006" height="116" alt="image" src="https://github.com/user-attachments/assets/5cdf86cc-65cc-459d-a7ae-0b0ef6cbfa08" />
 
 clique no botão ☀️ ou 🌙 para alternar entre modo claro e escuro
 
