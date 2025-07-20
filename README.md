@@ -24,6 +24,7 @@ modo simplificado
 
 <img width="1010" height="144" alt="image" src="https://github.com/user-attachments/assets/48241c20-796f-42a1-8666-3573beebd638" /> 
 
+
 modo que mostra o total de dias
 
 <img width="1006" height="116" alt="image" src="https://github.com/user-attachments/assets/5cdf86cc-65cc-459d-a7ae-0b0ef6cbfa08" />
