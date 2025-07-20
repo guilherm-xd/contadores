@@ -96,6 +96,7 @@
   .tempo {
     font-weight: bold;
     margin-top: 10px;
+    user-select: text;
   }
   button.ctrl {
     position: absolute;
@@ -263,14 +264,61 @@
   #save-btn:hover {
     background-color: #5a6fcf;
   }
+
+  /* Estilo botão do modal social - igual add-timer */
+  .btn-social {
+    background: var(--btn-bg-dark);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 12px 0;
+    width: 140px;
+    transition: background 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  body.light .btn-social {
+    background: var(--btn-bg-light);
+    color: var(--text-light);
+  }
+  .btn-social:hover {
+    background: #7289DA;
+    color: #fff;
+  }
+
+  /* Grade 2x2 para os botões sociais */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    justify-content: center;
+  }
+
+  /* Link pessoal */
+  .link-pessoal {
+    color: #7289DA;
+    font-weight: bold;
+    cursor: pointer;
+    transition: text-decoration 0.3s;
+  }
+  .link-pessoal:hover {
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
   <button id="toggle-mode" title="Alternar tema">☀️</button>
   <h1>Contadores</h1>
-  <p class="subtitulo">Um site por <span class="link-pessoal" id="link-pessoal">@guilhermxd</span></p>
+  <p class="subtitulo">um site por <span class="link-pessoal" id="link-pessoal">@guilhermxd</span></p>
   <button id="add-timer">➕ Adicionar contador</button>
   <div class="grid" id="grid"></div>
+
+  <!-- Modal adicionar/editar -->
   <div class="modal-bg" id="modal-bg">
     <div class="modal">
       <h2 id="modal-title">Novo contador</h2>
@@ -295,6 +343,23 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal social -->
+  <div class="modal-bg" id="modal-social">
+    <div class="modal">
+      <h2>Redes Sociais</h2>
+      <div class="social-grid" style="margin-top: 20px;">
+        <button class="btn-social" onclick="window.open('https://youtube.com/@guilhermxd', '_blank')">▶️ YouTube</button>
+        <button class="btn-social" onclick="window.open('https://instagram.com/guilhermxd_', '_blank')">📷 Instagram</button>
+        <button class="btn-social" onclick="window.open('https://twitter.com/guilhermxd__', '_blank')">🐦 Twitter</button>
+        <button class="btn-social" onclick="window.open('https://github.com/guilherm-xd', '_blank')">🐈‍⬛ GitHub</button>
+      </div>
+      <div class="modal-buttons" style="margin-top: 20px;">
+        <button id="fechar-social" style="background:#888;color:#fff;border-radius:20px;padding:8px 16px;cursor:pointer;border:none;transition:background-color 0.3s;">Fechar</button>
+      </div>
+    </div>
+  </div>
+
 <script>
   const grid = document.getElementById('grid');
   const modalBg = document.getElementById('modal-bg');
@@ -308,6 +373,24 @@
   const colorPicker = document.getElementById('color-picker');
   const customColorInput = document.getElementById('custom-color');
   const modalTitle = document.getElementById('modal-title');
+
+  const linkPessoal = document.getElementById('link-pessoal');
+  const modalSocial = document.getElementById('modal-social');
+  const fecharSocial = document.getElementById('fechar-social');
+
+  linkPessoal.onclick = () => {
+    modalSocial.style.display = 'flex';
+  };
+
+  fecharSocial.onclick = () => {
+    modalSocial.style.display = 'none';
+  };
+
+  window.onclick = function(e) {
+    if (e.target === modalSocial) {
+      modalSocial.style.display = 'none';
+    }
+  };
 
   let editId = null;
   let itens = JSON.parse(localStorage.getItem('contadores') || '[]');
@@ -401,8 +484,81 @@
     return luminance > 180;
   }
 
+  function formatTempoComplicado(diffMs) {
+    const isPast = diffMs < 0;
+    let diff = Math.abs(diffMs);
+
+    const segundos = Math.floor((diff / 1000) % 60);
+    const minutos = Math.floor((diff / (1000 * 60)) % 60);
+    const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    const partes = [];
+    if (dias > 0) partes.push(dias + (dias === 1 ? ' dia' : ' dias'));
+    if (horas > 0) partes.push(horas + (horas === 1 ? ' hora' : ' horas'));
+    if (minutos > 0) partes.push(minutos + (minutos === 1 ? ' minuto' : ' minutos'));
+    if (segundos >= 0) partes.push(segundos + (segundos === 1 ? ' segundo' : ' segundos'));
+
+    const texto = partes.join(', ');
+    return isPast ? texto + ' atrás' : 'Faltam ' + texto;
+  }
+
+  function formatTempoSimples(diffMs) {
+    const isPast = diffMs < 0;
+    let start = new Date();
+    let end = new Date(start.getTime() + diffMs);
+    if(isPast) [start, end] = [end, start];
+
+    let anos = end.getFullYear() - start.getFullYear();
+    let meses = end.getMonth() - start.getMonth();
+    let dias = end.getDate() - start.getDate();
+    let horas = end.getHours() - start.getHours();
+    let minutos = end.getMinutes() - start.getMinutes();
+    let segundos = end.getSeconds() - start.getSeconds();
+
+    if (segundos < 0) {
+      segundos += 60;
+      minutos--;
+    }
+    if (minutos < 0) {
+      minutos += 60;
+      horas--;
+    }
+    if (horas < 0) {
+      horas += 24;
+      dias--;
+    }
+    if (dias < 0) {
+      const anterior = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+      dias += anterior;
+      meses--;
+    }
+    if (meses < 0) {
+      meses += 12;
+      anos--;
+    }
+
+    const partes = [];
+    if (anos > 0) partes.push(anos + (anos === 1 ? ' ano' : ' anos'));
+    if (meses > 0) partes.push(meses + (meses === 1 ? ' mês' : ' meses'));
+    if (dias > 0) partes.push(dias + (dias === 1 ? ' dia' : ' dias'));
+    if (horas > 0) partes.push(horas + (horas === 1 ? ' hora' : ' horas'));
+    if (minutos > 0) partes.push(minutos + (minutos === 1 ? ' minuto' : ' minutos'));
+    if (segundos >= 0) partes.push(segundos + (segundos === 1 ? ' segundo' : ' segundos'));
+
+    const texto = partes.join(', ');
+    return isPast ? texto + ' atrás' : 'Faltam ' + texto;
+  }
+
+  let modosSimples = [];
+
   function render() {
     grid.innerHTML = '';
+    if (modosSimples.length !== itens.length) {
+      modosSimples = modosSimples.slice(0, itens.length);
+      while (modosSimples.length < itens.length) modosSimples.push(true);
+    }
+
     itens.forEach((it, i) => {
       const div = document.createElement('div');
       div.className = 'contador';
@@ -413,11 +569,13 @@
         <button class="ctrl edit-btn" title="Editar">✏️</button>
         <button class="ctrl delete-btn" title="Excluir">❌</button>
         <div>${it.nome}</div>
-        <div class="tempo">...</div>
+        <div class="tempo" style="user-select: text;">Carregando...</div>
       `;
+
       div.querySelector('.delete-btn').onclick = e => {
         e.stopPropagation();
         itens.splice(i, 1);
+        modosSimples.splice(i, 1);
         localStorage.setItem('contadores', JSON.stringify(itens));
         render();
       };
@@ -426,30 +584,56 @@
         editId = i;
         openModal(it);
       };
+
+      div.onclick = e => {
+        if(e.target.classList.contains('edit-btn') || e.target.classList.contains('delete-btn')) return;
+        modosSimples[i] = !modosSimples[i];
+        atualizarTempo(i, div.querySelector('.tempo'));
+      };
+
       grid.appendChild(div);
+    });
+
+    if (intervalId) clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      const tempoDivs = grid.querySelectorAll('.contador .tempo');
+      itens.forEach((it, i) => {
+        atualizarTempo(i, tempoDivs[i]);
+      });
+    }, 1000);
+
+    const tempoDivs = grid.querySelectorAll('.contador .tempo');
+    itens.forEach((it, i) => {
+      atualizarTempo(i, tempoDivs[i]);
     });
   }
 
-  toggleBtn.onclick = () => {
-    const light = document.body.classList.toggle('light');
-    toggleBtn.textContent = light ? '🌙' : '☀️';
-    localStorage.setItem('tema', light ? 'light' : 'dark');
-    render();
-  };
-
-  function carregarTema() {
-    const tema = localStorage.getItem('tema');
-    if(tema === 'light') {
-      document.body.classList.add('light');
-      toggleBtn.textContent = '🌙';
+  function atualizarTempo(i, tempoDiv) {
+    const it = itens[i];
+    const dt = new Date(it.data);
+    const now = new Date();
+    const diffMs = dt - now;
+    if (modosSimples[i]) {
+      tempoDiv.textContent = formatTempoSimples(diffMs);
     } else {
-      document.body.classList.remove('light');
-      toggleBtn.textContent = '☀️';
+      tempoDiv.textContent = formatTempoComplicado(diffMs);
     }
   }
 
-  carregarTema();
+  let intervalId = null;
+
   render();
+
+  toggleBtn.onclick = () => {
+    document.body.classList.toggle('light');
+    if(itens.length === 0){
+      atualizarCorSelecionada(getDefaultColor());
+    }
+    render();
+    toggleBtn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+  };
+
+  toggleBtn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
 </script>
 </body>
 </html>
