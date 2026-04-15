@@ -1,6 +1,6 @@
 # contadores
 
-é isso ai ne, codiguinho besta mas divertido 
+site que armazena contadores criatos pelo usuário
 
 COMO UTILIZAR
 
