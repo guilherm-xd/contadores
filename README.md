@@ -1,6 +1,6 @@
 # contadores
 
-site que armazena contadores criatos pelo usuário
+site que armazena contadores criados pelo usuário
 
 COMO UTILIZAR
 
